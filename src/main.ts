@@ -70,6 +70,19 @@ class ViewMainPage
         let el:HTMLInputElement = <HTMLInputElement>this.myf.getElementById(id);       
         return el.checked;
     }
+
+    MostrarBotones(): void{
+        // cargo la etiqueta Botones del DOM
+        let devicesUl:HTMLElement = this.myf.getElementById("botones");
+        //Agrego los tres botones
+        let Botones:string = "<a class='waves-effect waves-light btn' id='btn_Todos'>TODOS</a> \
+                              <a class='waves-effect waves-light btn' id='btn_Lamparas'>LAMPARAS</a> \
+                              <a class='waves-effect waves-light btn' id='btn_Persianas'>PERSIANAS</a>";
+        devicesUl.innerHTML=Botones;
+    }
+
+
+
 }
 class Main implements GETResponseListener, EventListenerObject, POSTResponseListener
 { 
@@ -78,11 +91,44 @@ class Main implements GETResponseListener, EventListenerObject, POSTResponseList
 
     handleEvent(evt:Event):void
     {
-        let sw: HTMLElement = this.myf.getElementByEvent(evt);
-        console.log("click en device:"+sw.id);
+        //Recupero el id del objeto que hizo click
+        let obj: HTMLElement = this.myf.getElementByEvent(evt);
 
-        let data:object = {"id":sw.id,"state":this.view.getSwitchStateById(sw.id)};
-        this.myf.requestPOST("devices",data,this);
+        //Obtenemos un array del id 
+        //el primer campo identificar el tipo de objeto
+        //el segundo campo para saber dentro del tipo cual hizo el click
+        let tipo_id = obj.id.split("_",2);
+
+        if (tipo_id[0] == "dev"){ //Se presiono un switch
+            console.log("click en switch")
+            console.log("click en device:"+obj.id);
+    
+            let data:object = {"id":obj.id,"state":this.view.getSwitchStateById(obj.id)};
+            this.myf.requestPOST("devices",data,this);      
+            return;  
+        }
+
+        if (tipo_id[0] == "btn"){ //Se presiono un boton
+            console.log(tipo_id[1]);
+            switch(tipo_id[1]){
+                case "Todos": //Se presiono el boton TODOS
+                    console.log("click en boton: " + obj.textContent);
+                    //Se hace un GET para obtener todos los dispositivos
+                    this.myf.requestGET("devices?filter=0",this);  
+                break;
+                case "Lamparas": //Se presiono el boton Lamparas
+                    console.log("click en boton: " + obj.textContent);
+                    //Se hace un GET para obtener solo las lamparas
+                    this.myf.requestGET("devices?filter=1",this);
+                break;
+                case "Persianas": //Se presiono el boton Persianas
+                    console.log("click en boton: " + obj.textContent);
+                    //Se hace un GET para obtener solo las persianas
+                    this.myf.requestGET("devices?filter=2",this);
+                break;
+            }
+        }
+
     }
 
     handleGETResponse(status:number,response:string):void{
@@ -108,13 +154,28 @@ class Main implements GETResponseListener, EventListenerObject, POSTResponseList
         }
     }
 
+    CrearBotones():void{
+        
+        //Creo los Botones en el DOM
+        this.view.MostrarBotones();
+
+        //Agrego eventos de click de los botones
+        this.myf.getElementById("btn_Todos").addEventListener("click", this);
+        this.myf.getElementById("btn_Lamparas").addEventListener("click", this);
+        this.myf.getElementById("btn_Persianas").addEventListener("click", this);       
+
+    }
+
     main():void 
     { 
       this.myf = new MyFramework();
 
       this.view = new ViewMainPage(this.myf);
 
-      this.myf.requestGET("devices",this);
+      //Se crean 3 botones y se agregan eventos de click
+      this.CrearBotones();
+      
+      this.myf.requestGET("devices?filter=0",this);
     } 
 } 
  
