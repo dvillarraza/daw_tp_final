@@ -1,6 +1,7 @@
 Autor: Diego Villarraza - 2020
 # Introduccion
-El proyecto es la creación una SPA (single web application) que simula el funcionamiento de unos dispositivos teniendo la posibilidad de intercactuar prendiendo o apagandolos: La SPA obteniene los datos de los dispositivos de una base de datos que corre en un servidor incluído en la aplicación. 
+El proyecto es la creación una SPA (single web application) que simula el funcionamiento de unos dispositivos teniendo la posibilidad de intercactuar con ellos prendiendo o apagandolos. La SPA consulta y modifica los datos de los dispositivos de una base de datos que corre en un servidor incluído en la aplicación. 
+
 Lo desarrolle para cumplir con el trabajo final de la asignatura Desarrollo de Aplicaciones Web de la Especilizacion de Internet de las cosas.
 
 Para desarrollar la maqueta de la SPA utilizo:
@@ -14,7 +15,7 @@ Para el servidor utilizo:
  - Base de datos MySql.
  - Administrador de base de datos PhpMyAdmin.
 
-Toda la aplicación corre con 3 contenedores docker agrupados en un docker compose para ejecutar todos con un solo comando.
+Toda la aplicación corre con 3 contenedores docker agrupados en un docker compose para ejecutarlos todos con un solo comando.
 
 Los argumentos de ejecución del contenedor del servidor de la base de datos llamado MySQL son:
 - MySQL
