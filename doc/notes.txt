@@ -1,0 +1,43 @@
+MySQL.
+○ Nombre de la imagen:
+    mysql:5.7
+○ Nombre contenedor:
+    mysql-server
+○ Network:
+    mysql-net
+○ Variables de entorno:
+    MYSQL_ROOT_PASSWORD=userpass
+○ Volumenes: 
+    HOST_DATABASE_DIR=./db/dumps
+    CONTAINER_DATABASE_DIR=/docker-entrypoint-initdb.d 
+    HOST_DATABASE_DUMP=./db/data
+    CONTAINER_DATABASE_DUMP=/var/lib/mysql
+            
+PHPMyAdmin.
+○ Nombre de la imagen:
+    phpmyadmin/phpmyadmin
+○ Nombre contenedor:
+    phpmyadmin
+○ Network:
+    mysql-net
+○ Variables de entorno
+    PMA_HOST=mysql-server
+    PMA_PORT=3306
+    MYSQL_ROOT_PASSWORD=userpass
+○ Puertos
+    HOSTPORT=8085
+    CONTAINERPORT=80
+
+Node App.
+○ Nombre de la imagen: 
+    abassi/nodejs-server:10.0-dev 
+○ Nombre contenedor: 
+    node-app
+○ Network: 
+    mysql-net
+○ Puertos: 
+    HOSTPORT=8000
+    CONTAINERPORT=3000
+○ Volumenes:
+    HOST_DIR=./
+    CONTAINER_DIR=/home/node/app
